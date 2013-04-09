@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/DLista/!svn/ver/10717/code/justifications/lib/pellet/owlapi
+END
+license.txt
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/DLista/!svn/ver/10717/code/justifications/lib/pellet/owlapi/license.txt
+END
+version.txt
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/DLista/!svn/ver/10717/code/justifications/lib/pellet/owlapi/version.txt
+END
+owlapi-src.jar
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/DLista/!svn/ver/10717/code/justifications/lib/pellet/owlapi/owlapi-src.jar
+END
+owlapi-bin.jar
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/DLista/!svn/ver/10717/code/justifications/lib/pellet/owlapi/owlapi-bin.jar
+END

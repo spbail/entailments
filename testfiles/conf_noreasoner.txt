@@ -1,0 +1,8 @@
+direct:true
+includeAtomicSubs:true
+includeAtomicEquiv:false
+includeUnsatClasses:false
+includeAsserted:false
+includeTop:false
+includeNonStrict:true
+includeIndirect:true

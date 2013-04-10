@@ -5,7 +5,7 @@ This is just a first stab at a new version of the OWL entailment extractor descr
 ## The currently submitted options are:
 * reasoner:{pellet | hermit | jfact} *feel free to extend for other reasoners*
 * includeAtomicSubs:true/false
-* includeAtomicEquiv:true/false (*not implemented*)
+* includeAtomicEquiv:true/false
 * includeUnsatClasses:true/false
 * includeAsserted:true/false
 * includeTop:true/false

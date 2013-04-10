@@ -14,9 +14,9 @@ This is just a first stab at a new version of the OWL entailment extractor descr
 
 ## Dealing with imported entailments:
 
-* includeNative:true/false (*default and only implemented option for now*)
+* includeNative:true/false
 * includeImported:true/false (*false implemented by default*)
-* includeMixed:true/false (*false implemented by default*)
+* includeMixed:true/false
 
 The lib include jars for some of the reasoners *just to get started*. It does *not* include Pellet. I recommend downloading the latest versions of the reasoners and replacing the current libs if the code is used in production.
 

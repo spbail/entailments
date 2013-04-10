@@ -83,12 +83,6 @@ public class EntailmentExtractor {
             }
         }
 
-        if (conf.getProperty("includeNonStrict").equals("false")) {
-            removeNonStrictSubsumptions(result, reasoner);
-        } else {
-            addNonStrictSubsumptions(result, reasoner);
-        }
-
         // add or remove asserted
         if (conf.getProperty("includeAsserted").equals("true")) {
             addAssertedSubsumptions(result);
@@ -96,8 +90,45 @@ public class EntailmentExtractor {
             removeAssertedSubsumptions(result);
         }
 
+        if (conf.getProperty("includeNonStrict").equals("false")) {
+            removeNonStrictSubsumptions(result, reasoner);
+        } else {
+            addNonStrictSubsumptions(result, reasoner);
+        }
+
+        if (conf.getProperty("includeImported").equals("false")) {
+            if (conf.getProperty("includeMixed").equals("false")) {
+                removeNonNativeEntailments(result, reasoner);
+            } else {
+                removeImportedEntailments(result, reasoner);
+            }
+        } else {
+            if (conf.getProperty("includeMixed").equals("true")) {
+                removeNativeEntailments(result, reasoner);
+            } else {
+                removeMixedEntailments(result, reasoner);
+            }
+        }
+
 
         return result;
+    }
+
+    private void removeMixedEntailments(Set<OWLAxiom> result, OWLReasoner reasoner) {
+        // TODO: implement - not really important though
+    }
+
+    private void removeNativeEntailments(Set<OWLAxiom> result, OWLReasoner reasoner) {
+        // TODO: implement - not really important though
+
+    }
+
+    private void removeImportedEntailments(Set<OWLAxiom> result, OWLReasoner reasoner) {
+        // TODO: implement - 2nd priority
+    }
+
+    private void removeNonNativeEntailments(Set<OWLAxiom> result, OWLReasoner reasoner) {
+        // TODO: implement - 1st priority, this is the most relevant one for now
     }
 
     private void addNonStrictSubsumptions(Set<OWLAxiom> result, OWLReasoner reasoner) {
@@ -115,7 +146,6 @@ public class EntailmentExtractor {
                     }
                 }
             }
-
         }
     }
 
@@ -162,7 +192,6 @@ public class EntailmentExtractor {
         boolean direct = !Boolean.parseBoolean(conf.getProperty("includeIndirect"));
         if (reasoner.isSatisfiable(cls)) {
             Set<OWLClass> superClasses = reasoner.getSuperClasses(cls, direct).getFlattened();
-
             for (OWLClass sup : superClasses) {
                 boolean includeTop = Boolean.parseBoolean(conf.getProperty("includeTop"));
                 OWLAxiom sc = df.getOWLSubClassOfAxiom(cls, sup);

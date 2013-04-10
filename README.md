@@ -1,4 +1,4 @@
-# README
+## README
 
 This is just a first stab at a new version of the OWL entailment extractor described in "Samantha Bail, Bijan Parsia, Uli Sattler. Extracting finite sets of entailments from OWL ontologies. In Proc. of DL 2011, 2011." [PDF available here](https://dl.dropbox.com/u/3074592/publications/entailments-dl2011.pdf)
 

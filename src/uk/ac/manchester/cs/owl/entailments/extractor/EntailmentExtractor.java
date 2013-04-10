@@ -104,7 +104,7 @@ public class EntailmentExtractor {
 
         // remove asserted
         if (conf.getProperty("includeAsserted").equals("false")) {
-            removeAssertedAtomicSubsumptions(result);
+            removeAssertedAxioms(result);
         }
 
         // add or remove nonstrict subs
@@ -325,7 +325,7 @@ public class EntailmentExtractor {
      * removes all asserted subsumptions
      * @param result
      */
-    private void removeAssertedAtomicSubsumptions(Set<OWLAxiom> result) {
+    private void removeAssertedAxioms(Set<OWLAxiom> result) {
         for (OWLClass cl : mergedOntology.getClassesInSignature()) {
             for (OWLSubClassOfAxiom ax : mergedOntology.getSubClassAxiomsForSubClass(cl)) {
                 result.remove(ax);
@@ -354,7 +354,6 @@ public class EntailmentExtractor {
                     } else if (sup.isOWLThing() && includeTop && superClasses.size() == 1) {
                         // else, if we only have Top and allow including Top, add it to the list
                         result.add(sc);
-
                     }
                 }
             }
@@ -378,13 +377,19 @@ public class EntailmentExtractor {
 
     /**
      * adds atomic equivalent classes.
-     * TODO: implement soonish.
-     * @param entity
      * @param reasoner
      * @param result
      */
-    public void addAtomicEquivalentClassesAxioms(OWLClass entity, OWLReasoner reasoner, Set<OWLAxiom> result) {
-
+    public void addAtomicEquivalentClassesAxioms(OWLClass cls, OWLReasoner reasoner, Set<OWLAxiom> result) {
+        if (reasoner.isSatisfiable(cls)) {
+            Set<OWLClass> eqClasses = reasoner.getEquivalentClasses(cls).getEntitiesMinus(cls);
+            for (OWLClass sup : eqClasses) {
+                OWLAxiom ax = df.getOWLEquivalentClassesAxiom(cls, sup);
+                if (!blacklist.contains(ax)) {
+                    result.add(ax);
+                }
+            }
+        }
     }
 
 

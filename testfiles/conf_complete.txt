@@ -1,0 +1,11 @@
+reasoner:hermit
+includeAtomicSubs:true
+includeAtomicEquiv:false
+includeUnsatClasses:false
+includeAsserted:false
+includeTop:false
+includeNonStrict:true
+includeIndirect:true
+includeNative:true
+includeImported:false
+includeMixed:false

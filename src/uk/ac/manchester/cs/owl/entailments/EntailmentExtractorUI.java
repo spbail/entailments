@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.owl.entailments;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
+import uk.ac.manchester.cs.owl.entailments.extractor.EntailmentExtractor;
 import uk.ac.manchester.cs.owl.entailments.util.Util;
 
 import java.io.*;

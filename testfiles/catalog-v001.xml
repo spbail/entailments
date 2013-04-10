@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <uri id="Imports Wizard Entry" name="http://www.semanticweb.org/ontologies/2011/1/puma-import.owl" uri="puma-import.owl"/>
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
+        <uri id="Automatically generated entry, Timestamp=1365605285158" name="http://www.semanticweb.org/ontologies/2011/1/puma-import.owl" uri="puma-import.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1365605285158" name="http://www.semanticweb.org/ontologies/2011/1/puma-root.owl" uri="puma-root.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1365605285158" name="http://www.semanticweb.org/ontologies/2011/1/puma.owl" uri="puma.owl"/>
+    </group>
+</catalog>

@@ -6,7 +6,6 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.util.SimpleRenderer;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
-import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasonerFactory;
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
 import java.util.ArrayList;
@@ -49,8 +48,6 @@ public class Util {
                 return new PelletReasonerFactory();
             case HERMIT:
                 return new Reasoner.ReasonerFactory();
-            case FACTPP:
-                return new FaCTPlusPlusReasonerFactory();
             case JFACT:
                 return new JFactFactory();
             default:
@@ -64,7 +61,6 @@ public class Util {
     public static enum ReasonerType {
         NONE,
         PELLET,
-        FACTPP,
         JFACT,
         HERMIT;
 
@@ -84,6 +80,7 @@ public class Util {
         List<String> axiomList = new ArrayList<String>();
         for (OWLAxiom ax : axioms) {
             axiomList.add(render(ax));
+//            axiomList.add(ax.toString());
         }
         Collections.sort(axiomList);
 

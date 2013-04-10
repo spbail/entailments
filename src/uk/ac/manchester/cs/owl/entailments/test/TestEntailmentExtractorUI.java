@@ -29,11 +29,14 @@ public class TestEntailmentExtractorUI {
 
 
     public static void main(String[] args) {
+
+    }
+
+    @Test
+    public void testUI() {
         String[] params = {"-i",
                 ontFile,
-                "-c", "/Users/samantha/code/entailments/testfiles/conf1.txt"};
-
-
+                "-c", "/Users/samantha/code/entailments/testfiles/conf_complete.txt"};
         try {
             OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
             OWLOntology ont = manager.loadOntologyFromOntologyDocument(new File(ontFile));
@@ -45,7 +48,6 @@ public class TestEntailmentExtractorUI {
             e.printStackTrace();
         }
     }
-
 
 
 }

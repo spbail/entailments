@@ -3,8 +3,7 @@ package uk.ac.manchester.cs.owl.entailments.test;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
-import uk.ac.manchester.cs.owl.entailments.EntailmentExtractor;
-import uk.ac.manchester.cs.owl.entailments.EntailmentExtractorUI;
+import uk.ac.manchester.cs.owl.entailments.extractor.EntailmentExtractor;
 import uk.ac.manchester.cs.owl.entailments.util.Util;
 
 import java.io.File;
@@ -29,6 +28,82 @@ public class TestEntailmentExtractor {
 
     private static String ontFile = "/Users/samantha/code/entailments/testfiles/puma.owl";
 
+    // this file has 18 native, 23 native + mixed, 24 native+mixed+imported
+    private static String ontFileWithImport = "/Users/samantha/code/entailments/testfiles/puma-root.owl";
+    private static String rootIRI = "http://www.semanticweb.org/ontologies/2011/1/puma.owl#";
+
+
+    @Test
+    public void testNativeOnly() {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntology ontology = null;
+        try {
+            ontology = manager.loadOntologyFromOntologyDocument(new File(ontFileWithImport));
+        } catch (OWLOntologyCreationException e) {
+            e.printStackTrace();
+        }
+
+        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        Properties conf = new Properties();
+        try {
+            conf.load(new FileInputStream(confFile));
+            conf.setProperty("reasoner", "hermit");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        conf.setProperty("includeNative", "true");
+        conf.setProperty("includeImported", "false");
+        conf.setProperty("includeMixed", "false");
+
+//        for (OWLClass c : ontology.getClassesInSignature(true)) {
+//            System.out.println(c);
+//        }
+
+        EntailmentExtractor ex = new EntailmentExtractor(ontology, conf);
+        Set<OWLAxiom> entailments = ex.getEntailments();
+//        System.out.println(entailments.size());
+//        Util.printNumbered(entailments);
+        assertTrue(entailments.size() == 18);
+
+    }
+
+
+
+    @Test
+    public void testIncludeMixed() {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntology ontology = null;
+        try {
+            ontology = manager.loadOntologyFromOntologyDocument(new File(ontFileWithImport));
+        } catch (OWLOntologyCreationException e) {
+            e.printStackTrace();
+        }
+
+        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        Properties conf = new Properties();
+        try {
+            conf.load(new FileInputStream(confFile));
+            conf.setProperty("reasoner", "hermit");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        conf.setProperty("includeAsserted", "true");
+
+        conf.setProperty("includeNative", "true");
+        conf.setProperty("includeImported", "false");
+        conf.setProperty("includeMixed", "true");
+
+//        for (OWLClass c : ontology.getClassesInSignature(true)) {
+//            System.out.println(c);
+//        }
+
+        EntailmentExtractor ex = new EntailmentExtractor(ontology, conf);
+        Set<OWLAxiom> entailments = ex.getEntailments();
+//        System.out.println(entailments.size());
+//        Util.printNumbered(entailments);
+        assertTrue("entailment sizs is " + entailments.size(), entailments.size() == 23);
+
+    }
 
     @Test
     public void testNoAsserted() {
@@ -40,25 +115,30 @@ public class TestEntailmentExtractor {
             e.printStackTrace();
         }
 
+        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        Properties conf = new Properties();
+        try {
+            conf.load(new FileInputStream(confFile));
+            conf.setProperty("reasoner", "hermit");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        conf.setProperty("includeAsserted", "false");
+
         Set<OWLAxiom> asserted = new HashSet<OWLAxiom>();
-
-        asserted.addAll(ontology.getAxioms(AxiomType.SUBCLASS_OF));
-
-//        System.out.println("ASSERTED");
-//        Util.printNumbered(asserted);
-//        System.out.println("");
-        Set<OWLAxiom> entailments = getEntailments("jfact", ontology);
+        EntailmentExtractor ex = new EntailmentExtractor(ontology, conf);
+        Set<OWLAxiom> entailments = ex.getEntailments();
+        asserted.addAll(ex.getMergedOntology().getAxioms(AxiomType.SUBCLASS_OF));
 
         int containsAsserted = 0;
 
-        for (OWLAxiom ax : asserted) {
-            if (entailments.contains(ax)) {
+        for (OWLAxiom ent : entailments) {
+            if (asserted.contains(ent.getAxiomWithoutAnnotations())) {
                 containsAsserted++;
             }
         }
-
-        assertTrue(containsAsserted == 0);
 //        Util.printNumbered(entailments);
+        assertTrue(containsAsserted == 0);
     }
 
 
@@ -72,10 +152,6 @@ public class TestEntailmentExtractor {
             e.printStackTrace();
         }
 
-        Set<OWLAxiom> asserted = new HashSet<OWLAxiom>();
-        asserted.addAll(ontology.getAxioms(AxiomType.SUBCLASS_OF));
-
-
         String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
         Properties conf = new Properties();
         try {
@@ -85,16 +161,28 @@ public class TestEntailmentExtractor {
             e.printStackTrace();
         }
 
+        Set<OWLAxiom> asserted = new HashSet<OWLAxiom>(ontology.getAxioms(AxiomType.SUBCLASS_OF));
+        EntailmentExtractor ex = new EntailmentExtractor(ontology, conf);
+
         conf.setProperty("includeAsserted", "true");
-        Set<OWLAxiom> entailmentsIncAs = getEntailments(conf, ontology);
+        ex.setConfig(conf);
+        Set<OWLAxiom> entailmentsIncAs = ex.getEntailments();
 
         conf.setProperty("includeAsserted", "false");
-        Set<OWLAxiom> entailmentsExAs = getEntailments(conf, ontology);
+        ex.setConfig(conf);
+        Set<OWLAxiom> entailmentsExAs = ex.getEntailments();
 
-        Set<OWLAxiom> merged = new HashSet<OWLAxiom>(entailmentsExAs);
+        Set<OWLAxiom> merged = new HashSet<OWLAxiom>();
+        for (OWLAxiom ent : entailmentsExAs) {
+            merged.add(ent.getAxiomWithoutAnnotations());
+        }
         merged.addAll(asserted);
 
-        assertTrue(merged.containsAll(entailmentsIncAs) && (merged.size() == entailmentsIncAs.size()));
+//        Util.printNumbered(merged);
+//
+//        Util.printNumbered(entailmentsIncAs);
+        assertTrue("merged size: " + merged.size() + " entailmentsIncAs size: " + entailmentsIncAs.size(),
+                (merged.containsAll(entailmentsIncAs) && merged.size() == entailmentsIncAs.size()));
 
     }
 
@@ -130,9 +218,9 @@ public class TestEntailmentExtractor {
 
         Set<OWLAxiom> entailments = getEntailments(conf, ontology);
         OWLDataFactory df = OWLManager.getOWLDataFactory();
-        OWLClass co = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#Cougar"));
-        OWLClass pu = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#Puma"));
-        OWLClass ml = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#MountainLion"));
+        OWLClass co = df.getOWLClass(IRI.create(rootIRI + "Cougar"));
+        OWLClass pu = df.getOWLClass(IRI.create(rootIRI + "Puma"));
+        OWLClass ml = df.getOWLClass(IRI.create(rootIRI + "MountainLion"));
 
         Set<OWLAxiom> eqCls = new HashSet<OWLAxiom>();
         eqCls.add(df.getOWLSubClassOfAxiom(co, pu));
@@ -143,16 +231,13 @@ public class TestEntailmentExtractor {
         eqCls.add(df.getOWLSubClassOfAxiom(pu, co));
 
         int nonstrict = 0;
-        for (OWLAxiom nss : eqCls) {
-            if (entailments.contains(nss)) {
+
+        for (OWLAxiom ax : entailments) {
+            if (eqCls.contains(ax.getAxiomWithoutAnnotations())) {
                 nonstrict++;
             }
         }
 
-//        System.out.println("ENTAILMENTS");
-//        Util.printNumbered(entailments);
-
-//        assertTrue(entailments.size() == 24);
         assertTrue("contains " + nonstrict + " nonstrict subsumptions.", nonstrict == 0);
     }
 
@@ -173,8 +258,8 @@ public class TestEntailmentExtractor {
         Set<OWLAxiom> asserted = new HashSet<OWLAxiom>();
         asserted.addAll(ontology.getAxioms(AxiomType.SUBCLASS_OF));
 
-        System.out.println("ASSERTED");
-        Util.printNumbered(asserted);
+//        System.out.println("ASSERTED");
+//        Util.printNumbered(asserted);
         System.out.println("");
 
         String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
@@ -192,13 +277,13 @@ public class TestEntailmentExtractor {
 
         Set<OWLAxiom> entailments = getEntailments(conf, ontology);
         OWLDataFactory df = OWLManager.getOWLDataFactory();
-        OWLClass co = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#Cougar"));
-        OWLClass pu = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#Puma"));
-        OWLClass ml = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#MountainLion"));
-        OWLClass cat = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#Cat"));
-        OWLClass mam = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#Mammal"));
-        OWLClass an = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#Animal"));
-        OWLClass bp = df.getOWLClass(IRI.create("http://www.semanticweb.org/ontologies/2011/1/puma.owl#BabyPuma"));
+        OWLClass co = df.getOWLClass(IRI.create(rootIRI + "Cougar"));
+        OWLClass pu = df.getOWLClass(IRI.create(rootIRI + "Puma"));
+        OWLClass ml = df.getOWLClass(IRI.create(rootIRI + "MountainLion"));
+        OWLClass cat = df.getOWLClass(IRI.create(rootIRI + "Cat"));
+        OWLClass mam = df.getOWLClass(IRI.create(rootIRI + "Mammal"));
+        OWLClass an = df.getOWLClass(IRI.create(rootIRI + "Animal"));
+        OWLClass bp = df.getOWLClass(IRI.create(rootIRI + "BabyPuma"));
 
         Set<OWLAxiom> directsubs = new HashSet<OWLAxiom>();
         directsubs.add(df.getOWLSubClassOfAxiom(bp, pu));
@@ -212,13 +297,13 @@ public class TestEntailmentExtractor {
 
         int indirect = 0;
         for (OWLAxiom ax : entailments) {
-            if (!directsubs.contains(ax)) {
+            if (!directsubs.contains(ax.getAxiomWithoutAnnotations())) {
                 indirect++;
             }
         }
 
-        System.out.println("ENTAILMENTS");
-        Util.printNumbered(entailments);
+//        System.out.println("ENTAILMENTS");
+//        Util.printNumbered(entailments);
 
 //        assertTrue(entailments.size() == 24);
         assertTrue("contains " + indirect + " indirect subsumptions.", indirect == 0);
@@ -263,5 +348,6 @@ public class TestEntailmentExtractor {
         return ex.getEntailments();
 
     }
+
 
 }

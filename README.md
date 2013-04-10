@@ -20,4 +20,6 @@ This is just a first stab at a new version of the OWL entailment extractor descr
 
 The lib include jars for some of the reasoners *just to get started*. It does *not* include Pellet. I recommend downloading the latest versions of the reasoners and replacing the current libs if the code is used in production.
 
-## There are test files in *testfiles*. Yeah. This includes a simple toy ontology puma.owl and a sample config file which lists all currently available options. 
+## Test files
+
+ There are test files in *testfiles*. Yeah. This includes a simple toy ontology puma.owl and a sample config file which lists all currently available options. 

@@ -26,7 +26,7 @@ The lib include jars for some of the reasoners *just to get started*. It does *n
 
 ## A few notes
 
-* Using includeAtomicEquiv:true in combination with includeNonStrict:true isn't of much use. If you include equivalence axioms, including non-strict is not necessary to preserve the monotone growth of the entailment set.
+* Using includeAtomicEquiv:true in combination with includeNonStrict:true isn't of much use. If you include equivalence axioms, including non-strict is not necessary to preserve the monotone growth of the entailment set, so it would just add lots of duplicate information to the entailment set. Not bad, just not necessary.
 * In order to preserve monotonicity of the entailment set growth (i.e. get same or more entailments when adding an axiom to the ontology), we need the most explicit (but non-redundant) entailment set. Current settings for that would be "true" settings for includeAtomicSubs, includeAsserted, includeNonStrict, includeIndirect. Alternatively, includeAtomicSubs, includeAtomicEquiv, includeAsserted, includeIndirect, if you want to include equivalence axioms.
 * includeImported:false excludes axioms that are stated in an imported ontology, even if the axiom uses only entities from the root ontology. Not a problem, just something to be aware of.
 * Current implementation of equivalences uses n-ary equivalences class axioms, which is the easiest solution for now.

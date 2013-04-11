@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static uk.ac.manchester.cs.owl.entailments.util.Util.*;
+
 /**
  * Created by
  * User: Samantha Bail
@@ -54,7 +56,7 @@ public class EntailmentExtractorUI {
 
         Set<OWLAxiom> entailments = ex.getEntailments();
         if (outputFile == null) {
-            Util.printNumbered(entailments);
+            printNumbered(entailments);
         } else {
             OWLOntology entailmentOntology = manager.createOntology(entailments);
             try {

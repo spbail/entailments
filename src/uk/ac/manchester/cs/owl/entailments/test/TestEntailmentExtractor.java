@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import uk.ac.manchester.cs.owl.entailments.extractor.EntailmentExtractor;
-import uk.ac.manchester.cs.owl.entailments.util.Util;
+import uk.ac.manchester.cs.owl.entailments.util.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,8 +26,8 @@ import static org.junit.Assert.assertTrue;
 
 public class TestEntailmentExtractor {
 
-    private static String ontFile = "/Users/samantha/code/entailments/testfiles/puma.owl";
-
+    //    private static String ontFile = "/Users/samantha/code/entailments/testfiles/puma.owl";
+    private static String ontFile = "/Users/samantha/code/entailments/testfiles/biopax-level3_vLevel3_v1.0.owl";
     // this file has 18 native, 23 native + mixed, 24 native+mixed+imported
     private static String ontFileWithImport = "/Users/samantha/code/entailments/testfiles/puma-root.owl";
     private static String rootIRI = "http://www.semanticweb.org/ontologies/2011/1/puma.owl#";
@@ -66,7 +66,6 @@ public class TestEntailmentExtractor {
         assertTrue(entailments.size() == 18);
 
     }
-
 
 
     @Test

@@ -13,6 +13,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static uk.ac.manchester.cs.owl.entailments.util.Util.*;
+
 /**
  * Created by
  * User: Samantha Bail
@@ -52,7 +54,7 @@ public class EntailmentExtractor {
      * @param conf
      */
     public void setConfig(Properties conf) {
-        this.rf = Util.getReasonerFactory(conf.getProperty("reasoner"));
+        this.rf = getReasonerFactory(conf.getProperty("reasoner"));
         this.conf = conf;
         blacklist = new HashSet<OWLAxiom>();
     }

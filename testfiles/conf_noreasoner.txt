@@ -1,0 +1,11 @@
+includeAtomicSubs:true
+includeAtomicEquiv:false
+includeUnsatClasses:false
+includeAsserted:false
+includeTop:false
+includeNonStrict:true
+includeIndirect:true
+includeNative:true
+includeImported:false
+includeMixed:false
+# current rep of subs is E^e (exhaustivem)

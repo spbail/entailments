@@ -122,7 +122,7 @@ public class EntailmentExtractorUI {
 
     private static void printUsage() {
         System.out.println("\nUSAGE: ");
-        System.out.println("entailments -i inputfile.owl [-o outputfile.owl] [-c configfile.txt]");
+        System.out.println("-i inputfile.owl [-o outputfile.owl] [-c configfile.txt]");
         System.out.println("    -i inputfile.owl        Set the input ontology to be used.");
         System.out.println("    -o outputfile.owl       Set the file to output entailments to. \n" +
                 "                            Default: orintNumbered to stdout.");

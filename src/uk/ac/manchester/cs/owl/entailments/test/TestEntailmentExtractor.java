@@ -100,7 +100,7 @@ public class TestEntailmentExtractor {
         Set<OWLAxiom> entailments = ex.getEntailments();
 //        System.out.println(entailments.size());
 //        Util.printNumbered(entailments);
-        assertTrue("entailment sizs is " + entailments.size(), entailments.size() == 23);
+        assertTrue("entailment size is " + entailments.size(), entailments.size() == 23);
 
     }
 

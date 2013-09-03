@@ -97,9 +97,11 @@ public class EntailmentExtractor {
         for (OWLClass cl : mergedOntology.getClassesInSignature()) {
             if (conf.getProperty("includeAtomicSubs").equals("true")) {
                 addAtomicSubsumptionAxioms(cl, reasoner, result);
-            } else if (conf.getProperty("includeAtomicEquiv").equals("true")) {
+            }
+            if (conf.getProperty("includeAtomicEquiv").equals("true")) {
                 addAtomicEquivalentClassesAxioms(cl, reasoner, result);
-            } else if (conf.getProperty("includeUnsatClasses").equals("true")) {
+            }
+            if (conf.getProperty("includeUnsatClasses").equals("true")) {
                 addUnsatisfiableClasses(cl, reasoner, result);
             }
         }
@@ -313,7 +315,7 @@ public class EntailmentExtractor {
             if (ax instanceof OWLSubClassOfAxiom) {
                 OWLSubClassOfAxiom sc = (OWLSubClassOfAxiom) ax;
                 OWLEquivalentClassesAxiom eq = df.getOWLEquivalentClassesAxiom(sc.getSubClass(), sc.getSuperClass());
-                if (reasoner.isEntailed(eq)) {
+                if (reasoner.isEntailed(eq) && !sc.getSuperClass().isOWLNothing()) {
                     removals.add(sc);
                     blacklist.add(sc);
                 }
@@ -369,7 +371,7 @@ public class EntailmentExtractor {
      * @param result
      */
     public void addUnsatisfiableClasses(OWLClass entity, OWLReasoner reasoner, Set<OWLAxiom> result) {
-        if (reasoner.isSatisfiable(entity)) {
+        if (!reasoner.isSatisfiable(entity)) {
             OWLAxiom sc = df.getOWLSubClassOfAxiom(entity, df.getOWLNothing());
             if (!blacklist.contains(sc)) {
                 result.add(sc);

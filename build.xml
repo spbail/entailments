@@ -1,36 +1,25 @@
-<project default="jar">
-
-    <property name="lib" location="lib"/>
-    <property name="runner" value="uk.ac.manchester.cs.owl.entailments.EntailmentExtractorUI"/>
-    <property name="build" value="build"/>
+<project name="entailmentextractor" default="jar" basedir=".">
+    <!-- set global properties for this build -->
     <property name="src" location="src"/>
+    <property name="build" location="out"/>
+    <property name="dist" location="dist"/>
+    <property name="lib" value="lib"/>
+    <property name="main" value="uk.ac.manchester.cs.owl.entailments.EntailmentExtractorOWLBugUI"/>
 
-    <path id="project.class.path">
-        <fileset dir="lib">
-            <include name="**/*.jar"/>
-        </fileset>
+    <path id="classpath">
+        <fileset dir="${lib}" includes="**/*.jar"/>
     </path>
 
-    <target name="clean" description="Cleaning up build files...">
-        <delete dir="${build}"/>
-    </target>
-
-    <target name="compile" description="Compile source files" depends="clean">
+    <target name="compile" depends="clean" description="compile the source ">
+        <!-- Create the build directory structure used by compile -->
         <mkdir dir="${build}"/>
-        <javac srcdir="${src}" destdir="${build}" debug="yes" deprecation="yes">
-            <classpath refid="project.class.path"/>
-        </javac>
-
-        <copy todir="${build}">
-            <fileset dir="${src}">
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
-
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac srcdir="${src}" destdir="${build}" classpathref="classpath"/>
     </target>
 
-    <target name="jar" depends="compile">
-        <pathconvert dirsep="/" pathsep=" " property="Class-Path">
+    <target name="jar" depends="compile" description="generate the distribution">
+        <!-- set classpath property -->
+        <pathconvert dirsep="/" pathsep=" " property="classpath">
             <map from="${lib}/" to="./lib/"/>
             <map from="${lib}\" to="./lib/"/>
             <path>
@@ -39,13 +28,17 @@
                 </fileset>
             </path>
         </pathconvert>
-
-        <jar jarfile="entailmentextractor.jar" basedir="${build}">
+        <!-- jar it! -->
+        <jar jarfile="${ant.project.name}.jar" basedir="${build}">
             <manifest>
-                <attribute name="Class-Path" value="${Class-Path}"/>
-                <attribute name="Main-Class" value="${runner}"/>
+                <attribute name="Main-Class" value="${main}"/>
+                <attribute name="Class-Path" value="${classpath}"/>
             </manifest>
         </jar>
     </target>
 
+    <target name="clean" description="clean up">
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+    </target>
 </project>

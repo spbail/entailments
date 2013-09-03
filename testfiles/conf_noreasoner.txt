@@ -1,10 +1,10 @@
 includeAtomicSubs:true
 includeAtomicEquiv:false
-includeUnsatClasses:false
+includeUnsatClasses:true
 includeAsserted:false
 includeTop:false
-includeNonStrict:true
-includeIndirect:true
+includeNonStrict:false
+includeIndirect:false
 includeNative:true
 includeImported:false
 includeMixed:false

@@ -3,7 +3,6 @@ package uk.ac.manchester.cs.owl.entailments;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import uk.ac.manchester.cs.owl.entailments.extractor.EntailmentExtractor;
-import uk.ac.manchester.cs.owl.entailments.util.Util;
 
 import java.io.*;
 import java.util.Properties;
@@ -11,7 +10,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static uk.ac.manchester.cs.owl.entailments.util.Util.*;
+import static uk.ac.manchester.cs.owl.entailments.util.Util.printNumbered;
 
 /**
  * Created by
@@ -22,12 +21,13 @@ import static uk.ac.manchester.cs.owl.entailments.util.Util.*;
  */
 
 
-public class EntailmentExtractorUI {
+public class EntailmentExtractorOWLBugUI {
 
     private static File inputFile;
-    private static File outputFile;
+    private static File owlOutputFile;
     private static File configFile;
     private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static File jsonOutputFile;
 
 
     public static void main(String[] args) throws OWLOntologyCreationException {
@@ -54,19 +54,27 @@ public class EntailmentExtractorUI {
         EntailmentExtractor ex = new EntailmentExtractor(ontology, conf);
 
         Set<OWLAxiom> entailments = ex.getEntailments();
-        if (outputFile == null) {
+        if (owlOutputFile == null) {
             printNumbered(entailments);
         } else {
             OWLOntology entailmentOntology = manager.createOntology(entailments);
             try {
-                manager.saveOntology(entailmentOntology, new FileOutputStream(outputFile));
-                logger.info("saved ontology to file: " + outputFile.getAbsolutePath());
+                manager.saveOntology(entailmentOntology, new FileOutputStream(owlOutputFile));
+                logger.info("saved ontology to file: " + owlOutputFile.getAbsolutePath());
             } catch (OWLOntologyStorageException e) {
                 e.printStackTrace();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
+            JSONOutput j = new JSONOutput();
+            try {
+                j.saveEntailments(entailments, jsonOutputFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
 
 
     }
@@ -92,8 +100,9 @@ public class EntailmentExtractorUI {
                         logger.info("loaded input file: " + inputFile.getAbsolutePath());
                     }
                 } else if (flag.equals("-o") || flag.equals("--output")) {
-                    outputFile = new File(value);
-                    logger.info("saving output to file: " + outputFile.getAbsolutePath());
+                    owlOutputFile = new File(value + ".owl");
+                    jsonOutputFile = new File(value + ".json");
+                    logger.info("saving output to file: " + owlOutputFile.getAbsolutePath());
 
                 } else if (flag.equals("-c") || flag.equals("--config")) {
                     configFile = new File(value);

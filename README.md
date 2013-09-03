@@ -2,7 +2,7 @@
 
 This is just a first stab at a new version of the OWL entailment extractor described in "Samantha Bail, Bijan Parsia, Uli Sattler. Extracting finite sets of entailments from OWL ontologies. In Proc. of DL 2011, 2011." [PDF available here](https://dl.dropbox.com/u/3074592/publications/entailments-dl2011.pdf)
 
-## The currently submitted options are:
+## The currently supported options are:
 * reasoner:{pellet | hermit | jfact} *feel free to extend for other reasoners*
 * includeAtomicSubs:true/false
 * includeAtomicEquiv:true/false

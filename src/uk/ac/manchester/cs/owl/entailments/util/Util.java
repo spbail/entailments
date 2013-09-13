@@ -103,5 +103,17 @@ public class Util {
         return r.render(ax);
     }
 
+    /**
+     * @param number any integer
+     * @param length how many positions do we want to pad the string to?
+     * @return number padded with zeros to make up 4 digits
+     */
+    public static String pad(int number, int length) {
+        String s = Integer.toString(number);
+        return ZEROS[length - s.length()] + s;
+    }
+
+    private static String[] ZEROS = {"", "0", "00", "000"};
+
 
 }

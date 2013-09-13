@@ -3,6 +3,7 @@ package uk.ac.manchester.cs.owl.entailments;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import uk.ac.manchester.cs.owl.entailments.extractor.EntailmentExtractor;
+import uk.ac.manchester.cs.owl.entailments.util.OwlOntologyLabeller;
 
 import java.io.*;
 import java.util.Properties;
@@ -54,10 +55,14 @@ public class EntailmentExtractorOWLBugUI {
         EntailmentExtractor ex = new EntailmentExtractor(ontology, conf);
 
         Set<OWLAxiom> entailments = ex.getEntailments();
+
+        OwlOntologyLabeller labeller = new OwlOntologyLabeller();
+        Set<OWLAxiom> labelledEntailments = labeller.labelAxioms(entailments);
         if (owlOutputFile == null) {
             printNumbered(entailments);
         } else {
-            OWLOntology entailmentOntology = manager.createOntology(entailments);
+            OWLOntology entailmentOntology = manager.createOntology(labelledEntailments);
+
             try {
                 manager.saveOntology(entailmentOntology, new FileOutputStream(owlOutputFile));
                 logger.info("saved ontology to file: " + owlOutputFile.getAbsolutePath());
@@ -69,12 +74,11 @@ public class EntailmentExtractorOWLBugUI {
 
             JSONOutput j = new JSONOutput();
             try {
-                j.saveEntailments(entailments, jsonOutputFile);
+                j.saveEntailments(labelledEntailments, jsonOutputFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
 
 
     }

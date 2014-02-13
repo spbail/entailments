@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Created by
- * User: Samantha Bail
+ * User: sam Bail
  * Date: 08/04/2013
  * Time: 22:54
  * The University of Manchester
@@ -26,10 +26,10 @@ import static org.junit.Assert.assertTrue;
 
 public class TestEntailmentExtractor {
 
-    //    private static String ontFile = "/Users/samantha/code/entailments/testfiles/puma.owl";
-    private static String ontFile = "/Users/samantha/code/entailments/testfiles/biopax-level3_vLevel3_v1.0.owl";
+    //    private static String ontFile = "/Users/sam/code/entailments/testfiles/puma.owl";
+    private static String ontFile = "/Users/sam/code/entailments/testfiles/biopax.owl";
     // this file has 18 native, 23 native + mixed, 24 native+mixed+imported
-    private static String ontFileWithImport = "/Users/samantha/code/entailments/testfiles/puma-root.owl";
+    private static String ontFileWithImport = "/Users/sam/code/entailments/testfiles/puma-root.owl";
     private static String rootIRI = "http://www.semanticweb.org/ontologies/2011/1/puma.owl#";
 
 
@@ -43,7 +43,7 @@ public class TestEntailmentExtractor {
             e.printStackTrace();
         }
 
-        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        String confFile = "/Users/sam/code/entailments/testfiles/conf_noreasoner.txt";
         Properties conf = new Properties();
         try {
             conf.load(new FileInputStream(confFile));
@@ -78,7 +78,7 @@ public class TestEntailmentExtractor {
             e.printStackTrace();
         }
 
-        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        String confFile = "/Users/sam/code/entailments/testfiles/conf_noreasoner.txt";
         Properties conf = new Properties();
         try {
             conf.load(new FileInputStream(confFile));
@@ -114,7 +114,7 @@ public class TestEntailmentExtractor {
             e.printStackTrace();
         }
 
-        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        String confFile = "/Users/sam/code/entailments/testfiles/conf_noreasoner.txt";
         Properties conf = new Properties();
         try {
             conf.load(new FileInputStream(confFile));
@@ -151,7 +151,7 @@ public class TestEntailmentExtractor {
             e.printStackTrace();
         }
 
-        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        String confFile = "/Users/sam/code/entailments/testfiles/conf_noreasoner.txt";
         Properties conf = new Properties();
         try {
             conf.load(new FileInputStream(confFile));
@@ -203,7 +203,7 @@ public class TestEntailmentExtractor {
 //        Util.printNumbered(asserted);
 //        System.out.println("");
 
-        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        String confFile = "/Users/sam/code/entailments/testfiles/conf_noreasoner.txt";
         Properties conf = new Properties();
         try {
             conf.load(new FileInputStream(confFile));
@@ -261,7 +261,7 @@ public class TestEntailmentExtractor {
 //        Util.printNumbered(asserted);
         System.out.println("");
 
-        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        String confFile = "/Users/sam/code/entailments/testfiles/conf_noreasoner.txt";
         Properties conf = new Properties();
         try {
             conf.load(new FileInputStream(confFile));
@@ -328,7 +328,7 @@ public class TestEntailmentExtractor {
     }
 
     private Set<OWLAxiom> getEntailments(String name, OWLOntology ontology) {
-        String confFile = "/Users/samantha/code/entailments/testfiles/conf_noreasoner.txt";
+        String confFile = "/Users/sam/code/entailments/testfiles/conf_noreasoner.txt";
         Properties conf = new Properties();
         conf.setProperty("reasoner", name);
 

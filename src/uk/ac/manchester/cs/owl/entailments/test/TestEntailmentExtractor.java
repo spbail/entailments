@@ -24,6 +24,8 @@ import static org.junit.Assert.assertTrue;
  */
 
 
+// currently failing...
+
 public class TestEntailmentExtractor {
 
     //    private static String ontFile = "/Users/sam/code/entailments/testfiles/puma.owl";
